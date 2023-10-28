@@ -48,9 +48,19 @@ do
 		echo $ave | awk '{printf("%.5f",$1)}'
 		;;
 	4) 
-		echo "4" ;;
+		read -p "Do you want to delete the 'IMDb URL' from 'u.item'?(y/n) : " decision
+		if [ "$decision" = "y" ]
+		then
+			cat u.item | sed -n '1,10p'	
+		fi
+	       	;;
 	5)
-		echo "5" ;;
+		read -p "Do you want to get the data about users from 'u.user'?(y/n) : " decision
+		if [ "$decision" = "y" ]
+		then
+			cat u.user | sed -En '1,10p'
+		fi
+		;;
 	6)
 		echo "6" ;;
 	7)
