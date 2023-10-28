@@ -29,6 +29,7 @@ do
 		read -p "Do you want to get the data of 'action' genre movies from 'u.item'?(y/n):" decision
 		if [ "$decision" = "y" ]
 		then
+		echo ""
 		mid=$(cat u.item | awk -F \| '$7=="1"{print $1}')
 		for var in $( seq 1 10 )
 		do
@@ -46,12 +47,14 @@ do
 		numcount=$(cat u.data | awk -v id=$mid '$2==id {count+=1} END {print count}')
 		ave=$(echo "$score/$numcount" | bc -l)
 		echo $ave | awk '{printf("%.5f",$1)}'
+		echo ""
 		;;
 	4) 
 		read -p "Do you want to delete the 'IMDb URL' from 'u.item'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
-			cat u.item | sed -n '1,10p'	
+			echo ""
+			sed -e 's/http.*)//g' -ne '1,10p' u.item	
 		fi
 	       	;;
 	5)
@@ -64,7 +67,11 @@ do
 	6)
 		echo "6" ;;
 	7)
-		echo "7" ;;
+		read -p "Please enter the 'user id' (1~943) : " uid
+		echo ""
+		mid=$( sort -k2 -n u.data | awk -v uidCopy=$uid '$1==uidCopy{print $2}')
+		echo $mid
+		;;
 	8)
 		echo "8" ;;
 	esac
