@@ -61,24 +61,28 @@ do
 		read -p "Do you want to get the data about users from 'u.user'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
-			sed -E -ne 's/([0-9]+|)(^|.[0-9]+|)(^|[M|F].|)(^|.[A-z]+|)(^|.*)/user \1 is \2 years old \3 \4/g' -ne '1,10p' u.user
+			sed -E -ne 's/([0-9]+|)(^|.[0-9].|)([M|F]{1}.|)(^|.[A-z]+|)(^|.*)/user \1 is \2 years old \3 \4/g' -ne '1,10p' u.user
 		fi
 		;;
 	6)
 		read -p "Do you want to Modify the format of 'rlease data' in 'u.item'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
-			echo ""	
+			sed -E -ne 's/(^|.[0-9]{2})(-)([A-z]{3})(-)(^|.[0-9]{4})/\3\2\1/g' -ne '1673,1682p' u.item	
 		fi
 		;;
 	7)
 		read -p "Please enter the 'user id' (1~943) : " uid
 		echo ""
-		mid=$( sort -k2 -n u.data | awk -v uidCopy=$uid '$1==uidCopy{print $2}')
+		mid=$( sort -k2 -n u.data | awk -v uidCopy=$uid '$1==uidCopy{print $2,"|"}')
 		echo $mid
 		;;
 	8)
-		echo "8" ;;
+		read -p "Do you want to get the average 'rating' of movies rated by users with 'age' between 20 and 29 and 'occupation' as 'programmer'?(y/n) : " decision
+		if [ "$dicision" = "y" ]
+		then
+		fi
+		;;
 	esac
 echo ""
 read -p "Enter your choice [ 1-9 ] " choice
