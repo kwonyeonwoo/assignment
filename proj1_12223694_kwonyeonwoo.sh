@@ -61,11 +61,16 @@ do
 		read -p "Do you want to get the data about users from 'u.user'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
-			cat u.user | sed -En '1,10p'
+			sed -E -ne 's/([0-9]+|)(^|.[0-9]+|)(^|[M|F].|)(^|.[A-z]+|)(^|.*)/user \1 is \2 years old \3 \4/g' -ne '1,10p' u.user
 		fi
 		;;
 	6)
-		echo "6" ;;
+		read -p "Do you want to Modify the format of 'rlease data' in 'u.item'?(y/n) : " decision
+		if [ "$decision" = "y" ]
+		then
+			echo ""	
+		fi
+		;;
 	7)
 		read -p "Please enter the 'user id' (1~943) : " uid
 		echo ""
