@@ -61,7 +61,13 @@ do
 		read -p "Do you want to get the data about users from 'u.user'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
-			sed -E -ne 's/([0-9]+|)(^|.[0-9].|)([M|F]{1}.|)(^|.[A-z]+|)(^|.*)/user \1 is \2 years old \3 \4/g' -ne '1,10p' u.user
+			change=$(sed -e 's/F/female/g' -e 's/M/male/g' u.user | awk -F\| '{print $1, $2, $3, $4, "\n"}')
+			#echo $change
+			for var in $(seq 1 10 )
+			do
+				change2=$(sed -e 's/F/female/g' -e 's/M/male/g' u.user | awk -F \| -v posi=$var '$1==posi{print $1, $2, $3, $4}')
+				echo $change2 | sed -E -ne 's/([0-9]+|)(^|.[0-9]+|)(^|.[male|female]+|)(^|.[A-z]+|)(^|.*)/user \1 is \2 years old \3 \4/g' -e 'p' 
+			done
 		fi
 		;;
 	6)
