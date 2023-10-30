@@ -74,14 +74,19 @@ do
 	7)
 		read -p "Please enter the 'user id' (1~943) : " uid
 		echo ""
-		mid=$( sort -k2 -n u.data | awk -v uidCopy=$uid '$1==uidCopy{print $2,"|"}')
-		echo $mid
+		mid=$( sort -k2 -n u.data | awk -v uidCopy=$uid '$1==uidCopy{print $2}')
+		list=$( sort -k2 -n u.data | awk -v uidCopy=$uid '$1==uidCopy{print $2,"|"}')
+		echo $list
+		echo ""
+		for var in $( seq 1 10 )
+		do 
+			index=$(echo -n $mid | awk -v copy=$var '{print $copy}')
+			mname=$(cat u.item | awk -F \| -v pos=$index '$1==pos{print $2}')
+			echo $index " | " $mname
+		done
 		;;
 	8)
 		read -p "Do you want to get the average 'rating' of movies rated by users with 'age' between 20 and 29 and 'occupation' as 'programmer'?(y/n) : " decision
-		if [ "$dicision" = "y" ]
-		then
-		fi
 		;;
 	esac
 echo ""
