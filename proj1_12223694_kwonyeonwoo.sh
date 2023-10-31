@@ -61,7 +61,7 @@ do
 		read -p "Do you want to get the data about users from 'u.user'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
-			sed -E 's/([0-9]{1,3})([0-9]{2})([M|F])([a-z]+)/user \1 is \2 years old \3 \4/p' u.user
+			sed -E -ne 's/([0-9]+)(.|)([0-9]{2})(.|)([M|F])(.|)([a-z]+)(.|)([0-9]+)/user \1 is \3 years old \5 \7/g' -e 's/F/female/g' -e 's/M/male/g' -ne '1,10p' u.user
 		fi
 		;;
 	6)
