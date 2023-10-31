@@ -61,20 +61,14 @@ do
 		read -p "Do you want to get the data about users from 'u.user'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
-			change=$(sed -e 's/F/female/g' -e 's/M/male/g' u.user | awk -F\| '{print $1, $2, $3, $4, "\n"}')
-			#echo $change
-			for var in $(seq 1 10 )
-			do
-				change2=$(sed -e 's/F/female/g' -e 's/M/male/g' u.user | awk -F \| -v posi=$var '$1==posi{print $1, $2, $3, $4}')
-				echo $change2 | sed -E -ne 's/([0-9]+|)(^|.[0-9]+|)(^|.[male|female]+|)(^|.[A-z]+|)(^|.*)/user \1 is \2 years old \3 \4/g' -e 'p' 
-			done
+			sed -E 's/([0-9]{1,3})([0-9]{2})([M|F])([a-z]+)/user \1 is \2 years old \3 \4/p' u.user
 		fi
 		;;
 	6)
 		read -p "Do you want to Modify the format of 'rlease data' in 'u.item'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
-			sed -E -ne 's/(^|.[0-9]{2})(-)([A-z]{3})(-)(^|.[0-9]{4})/\3\2\1/g' -ne '1673,1682p' u.item	
+			sed -E -ne 's/Jan/01/g' -e 's/Feb/02/g' -e 's/Mar/03/g' -e 's/Sep/09/g' -e 's/Oct/10/g' -E -ne 's/([0-9]{2})(-)([0-9]{2})(-)([0-9]{4})/\5\3\1/' -ne '1673,1682p' u.item	
 		fi
 		;;
 	7)
