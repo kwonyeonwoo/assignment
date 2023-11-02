@@ -61,6 +61,7 @@ do
 		read -p "Do you want to get the data about users from 'u.user'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
+			echo ""
 			sed -E -ne 's/([0-9]+)(.|)([0-9]{2})(.|)([M|F])(.|)([a-z]+)(.|)([0-9]+)/user \1 is \3 years old \5 \7/g' -e 's/F/female/g' -e 's/M/male/g' -ne '1,10p' u.user
 		fi
 		;;
@@ -87,6 +88,28 @@ do
 		;;
 	8)
 		read -p "Do you want to get the average 'rating' of movies rated by users with 'age' between 20 and 29 and 'occupation' as 'programmer'?(y/n) : " decision
+		if [ "$decision" = "y" ]
+		then
+		uid=$(cat u.user | awk -F \| '$2>=20 && $2<30 && $4=="programmer"{print $1}')
+		for var in $uid
+		do
+			list+=$(cat u.data | awk -v uidx=$var '$1==uidx{print $0,","}')
+		done
+		for var in $( seq 1 1682 )
+		do
+			score=$(echo $list | awk -v midx=$var 'BEGIN {RS = ","} $2==midx{sum+=$3} END {print sum}')
+			count=$(echo $list | awk -v midx=$var 'BEGIN {RS = ","} $2==midx{num++} END {print num}')
+			if [ "$count" > "0" ]
+			then
+				ave=$(echo "$score/$count" | bc -l)
+				echo -n $var " "
+				echo $ave | awk '{printf("%.5f",$1)}'
+				echo " "
+			else
+				continue
+			fi
+		done
+		fi
 		;;
 	esac
 echo ""
