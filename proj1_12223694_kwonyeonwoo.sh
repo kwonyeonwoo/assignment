@@ -46,7 +46,7 @@ do
 		score=$(cat u.data | awk -v id=$mid '$2==id {sum+=$3} END {print sum}')
 		numcount=$(cat u.data | awk -v id=$mid '$2==id {count+=1} END {print count}')
 		ave=$(echo "$score/$numcount" | bc -l)
-		echo $ave | awk '{printf("%.5f",$1)}'
+		echo $ave | awk '{printf("%.5f",$1)}' | grep -o '.*[1-9]'
 		echo ""
 		;;
 	4) 
@@ -69,6 +69,7 @@ do
 		read -p "Do you want to Modify the format of 'rlease data' in 'u.item'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
+			echo ""
 			sed -E -ne 's/Jan/01/g' -e 's/Feb/02/g' -e 's/Mar/03/g' -e 's/Sep/09/g' -e 's/Oct/10/g' -E -ne 's/([0-9]{2})(-)([0-9]{2})(-)([0-9]{4})/\5\3\1/' -ne '1673,1682p' u.item	
 		fi
 		;;
@@ -90,6 +91,7 @@ do
 		read -p "Do you want to get the average 'rating' of movies rated by users with 'age' between 20 and 29 and 'occupation' as 'programmer'?(y/n) : " decision
 		if [ "$decision" = "y" ]
 		then
+		echo ""
 		uid=$(cat u.user | awk -F \| '$2>=20 && $2<30 && $4=="programmer"{print $1}')
 		for var in $uid
 		do
@@ -103,8 +105,7 @@ do
 			then
 				ave=$(echo "$score/$count" | bc -l)
 				echo -n $var " "
-				echo $ave | awk '{printf("%.5f",$1)}'
-				echo " "
+				echo $ave | awk '{printf("%.5f",$1)}' | grep -o '.*[1-9]'
 			else
 				continue
 			fi
